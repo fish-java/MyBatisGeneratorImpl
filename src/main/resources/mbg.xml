@@ -11,7 +11,7 @@
         <!--jdbc的数据库连接 -->
         <jdbcConnection driverClass="${driverClass}"
                         connectionURL="${connectionURL}"
-                        userId="${userId}">
+                        userId="${username}">
         </jdbcConnection>
 
         <!-- Model模型生成器,用来生成含有主键key的类，记录类 以及查询Example类
