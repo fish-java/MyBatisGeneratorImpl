@@ -8,28 +8,30 @@
 
     <context id="default" targetRuntime="MyBatis3">
 
-        <!--jdbc的数据库连接 -->
+        <!-- JDBC的数据库连接，MyBatis通过连接数据库读取schema来做逆向工程 -->
         <jdbcConnection driverClass="${driverClass}"
                         connectionURL="${connectionURL}"
                         userId="${userId}">
         </jdbcConnection>
 
-        <!-- Model模型生成器,用来生成含有主键key的类，记录类 以及查询Example类
-            targetPackage     指定生成的model生成所在的包名
-            targetProject     指定在该项目下所在的路径
+        <!-- Model模型生成器，用来生成我们的实体类
+               targetProject     指定生成的代码的目录
+               targetPackage     指定生成的包名
+            实体类代码最终会生成在{当前项目更目录}/{targetProject}/{targetPackage}
         -->
-        <javaModelGenerator targetPackage="entity" targetProject="src/main/java">
-            <!-- 是否对model添加 构造函数 -->
+        <javaModelGenerator targetProject="src/main/java" targetPackage="entity">
+
+            <!-- 是否为实体类添加构造函数 -->
             <property name="constructorBased" value="true"/>
 
             <!-- 是否允许子包，即targetPackage.schemaName.tableName -->
             <property name="enableSubPackages" value="false"/>
 
-            <!-- 建立的Model对象是否 不可改变  即生成的Model对象不会有 setter方法，只有构造方法 -->
+            <!-- 建立的实体对象是否 不可改变，即生成的实体类会不会有setter方法 -->
             <property name="immutable" value="true"/>
 
-            <!-- 给Model添加一个父类 -->
-            <property name="rootClass" value="com.foo.louis.Hello"/>
+            <!-- 给实体类添加一个父类 -->
+            <!--<property name="rootClass" value="com.foo.louis.Hello"/>-->
 
             <!-- 是否对类CHAR类型的列的数据进行trim操作 -->
             <property name="trimStrings" value="true"/>
@@ -42,40 +44,17 @@
         </sqlMapGenerator>
 
 
-        <!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件 的代码
-                type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper对象
-                type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
-                type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
-        -->
+        <!-- 生成的dao层的时候的参数，和上面的一样 -->
         <javaClientGenerator targetPackage="dao"
                              targetProject="src/main/java"
                              type="MIXEDMAPPER">
-            <property name="enableSubPackages" value=""/>
-            <!--
-                    定义Maper.java 源代码中的ByExample() 方法的可视性，可选的值有：
-                    public;
-                    private;
-                    protected;
-                    default
-                    注意：如果 targetRuntime="MyBatis3",此参数被忽略
-             -->
-            <property name="exampleMethodVisibility" value=""/>
-            <!--
-                                           方法名计数器
-              Important note: this property is ignored if the target runtime is MyBatis3.
-             -->
-            <property name="methodNameCalculator" value=""/>
 
-            <!--
-                                                为生成的接口添加父接口
-             -->
-            <property name="rootInterface" value=""/>
+            <!-- 为生成的接口添加父类 -->
+            <!--<property name="rootInterface" value="com.bar.FooDao"/>-->
 
         </javaClientGenerator>
 
-
-
-        <table tableName="monkey" domainObjectName="Monkey">
-        </table>
+        <!-- 解析数据库中的monkey表，生成的实体类的类名是Monkey -->
+        <table tableName="monkey" domainObjectName="Monkey" />
     </context>
 </generatorConfiguration>

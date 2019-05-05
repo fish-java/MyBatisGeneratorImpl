@@ -2,3 +2,5 @@
 *.iml
 .DS_Store
 target/
+src/main/java/
+src/main/resources/mapper/
